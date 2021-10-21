@@ -28,8 +28,8 @@ public class StudentService {
 
     public StudentVO getStudentById(int id) {
         StudentVO studentVO = null;
-        Faculty faculty = restTemplate.getForObject(facultyUrl + id, Faculty.class);
         Student student = studentRepository.findById(id).get();
+        Faculty faculty = restTemplate.getForObject(facultyUrl + student.getFacultyId(), Faculty.class);
         studentVO.setFaculty(faculty);
         studentVO.setStudent(student);
         return studentVO;
