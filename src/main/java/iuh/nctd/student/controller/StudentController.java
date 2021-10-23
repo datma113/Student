@@ -18,13 +18,20 @@ public class StudentController {
         return studentService.getStudentById(studentId);
     }
 
-    @GetMapping("/retry/{studentId}")
-    public Student getStudentByIdRetry(@PathVariable int studentId) {
-        return studentService.getStudentByIdRetry(studentId);
+    @GetMapping("/rateLimiter/{studentId}")
+    public Student getStudentByIdRateLimiter(@PathVariable int studentId) {
+
+        for (int i = 0; i < 10; i++) {
+            studentService.getStudentByIdRateLimiter(studentId);
+        }
+        return null;
     }
+
+
     @PostMapping("/")
     public Student addStudent(@RequestBody Student student) {
         return studentService.addStudent(student);
     }
+
 
 }

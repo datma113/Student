@@ -1,24 +1,32 @@
 resilience4j:
   retry:
     instances:
-      test-retry: #name của retry
-        maxRetryAttemps: 5 # số lần gọi request lại
-        waitDuration: 3s # gọi lại mỗi 3s
+      retryAndRateLimitExample:
+        maxRetryAttemps: 5
+        waitDuration: 3s
+  ratelimiter:
+    instances:
+      testRateLimiter: #name RateLimiter
+        limitForPeriod: 2 # limit 2 request
+        limitRefreshPeriod: 1s # trong 1s nhận 2 request
+        timeoutDuration: 1s # quá limit thì sau 1s thì nhận lại request
 
-      throwingException:
-        maxRetryAttemps: 5 # số lần gọi request lại
-        waitDuration: 3s # gọi lại mỗi 3s
-        retryExceptions:
-          - java.lang.Exception
+      multipleRateLimiters_rps_limiter:
+        limitForPeriod: 2
+        limitRefreshPeriod: 1s
+        timeoutDuration: 2s
 
-      exponential:
-        maxRetryAttemps: 5 # số lần gọi request lại
-        waitDuration: 3s # gọi lại mỗi 3s
-        enableExponentialBackoff: true
-        exponentialBackoffMultiplier: 2 # mỗi lần retry sẽ wait với x2
+      multipleRateLimiters_rpm_limiter:
+        limitForPeriod: 40
+        limitRefreshPeriod: 1m
+        timeoutDuration: 2s
 
-      random:
-        maxRetryAttemps: 5 # số lần gọi request lại
-        waitDuration: 3s # gọi lại mỗi 3s
-        enableRandomizeWait: true
-        randomizeWaitFactor: 0.5 #random từ 2.5s dựa vào waitDuration
+      retryAndRateLimitExample:
+        limitForPeriod: 1
+        limitRefreshPeriod: 1s
+        timeoutDuration: 250ms
+
+      fallbackExample: #khi gọi lỗi trả  về phương thức khác
+        limitForPeriod: 1
+        limitRefreshPeriod: 1s
+        timeoutDuration: 500ms
