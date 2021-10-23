@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,6 +27,9 @@ public class StudentService {
 
     @Value("${url.faculty}")
     private String facultyUrl;
+
+    @Autowired
+    private RPMTest rpmTest;
 
     public Student addStudent(Student student) {
         return studentRepository.save(student);
@@ -47,4 +51,19 @@ public class StudentService {
         return studentRepository.findById(id).get();
     }
 
+    @RateLimiter(name = "multipleRateLimiters_rps_limiter")
+    public Student getStudentRPS(int id ) {
+        return rpmTest.getStudentRPM(id, studentRepository);
+    }
+
+    @Component
+    class RPMTest {
+
+        @RateLimiter(name = "multipleRateLimiters_rpm_limiter")
+        public Student getStudentRPM(int id, StudentRepository studentRepository ) {
+            return studentRepository.findById(id).get();
+        }
+
+
+    }
 }
