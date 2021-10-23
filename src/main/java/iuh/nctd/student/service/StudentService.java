@@ -58,7 +58,6 @@ public class StudentService {
 
     @Component
     class RPMTest {
-
         @RateLimiter(name = "multipleRateLimiters_rpm_limiter")
         public Student getStudentRPM(int id, StudentRepository studentRepository ) {
             return studentRepository.findById(id).get();
