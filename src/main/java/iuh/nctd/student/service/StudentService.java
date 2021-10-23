@@ -1,5 +1,6 @@
 package iuh.nctd.student.service;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import iuh.nctd.student.VO.Faculty;
 import iuh.nctd.student.VO.StudentVO;
 import iuh.nctd.student.entity.Student;
@@ -34,6 +35,11 @@ public class StudentService {
         studentVO.setFaculty(faculty);
         studentVO.setStudent(student);
         return studentVO;
+    }
+
+    @Retry(name = "test-retry")
+    public Student getStudentByIdRetry(int id) {
+        return studentRepository.findById(id).get();
     }
 
 }

@@ -1,0 +1,24 @@
+resilience4j:
+  retry:
+    instances:
+      test-retry: #name của retry
+        maxRetryAttemps: 5 # số lần gọi request lại
+        waitDuration: 3s # gọi lại mỗi 3s
+
+      throwingException:
+        maxRetryAttemps: 5 # số lần gọi request lại
+        waitDuration: 3s # gọi lại mỗi 3s
+        retryExceptions:
+          - java.lang.Exception
+
+      exponential:
+        maxRetryAttemps: 5 # số lần gọi request lại
+        waitDuration: 3s # gọi lại mỗi 3s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2 # mỗi lần retry sẽ wait với x2
+
+      random:
+        maxRetryAttemps: 5 # số lần gọi request lại
+        waitDuration: 3s # gọi lại mỗi 3s
+        enableRandomizeWait: true
+        randomizeWaitFactor: 0.5 #random từ 2.5s dựa vào waitDuration
